@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import logging
 import os
-
+from sklearn.model_selection import train_test_split
 
 # logging setup #
 
@@ -39,8 +39,36 @@ def load_data(file_path):
     return data
 
 
-def rename_column(data,original_name,new_name):
+def rename_column(data,original_name:str,new_name:str):
     data.rename(columns={original_name:new_name})
+    logger.debug(f'{original_name} renamed to {new_name}')
 
     return data
+
+
+def save_data(train_data,test_data,data_path):
+    raw_data_path = os.path.join(data_path,'raw')
+    os.makedirs(raw_data_path)
+    train_data.to_csv(os.path.join(raw_data_path,'train_data.csv'))
+    test_data.to_csv(os.path.join(raw_data_path,'test_data.csv'))
+
+    logger.debug(f'train and test data saved to the {raw_data_path} folder')
+
+
+def main():
+    data = load_data(r"C:\Users\SHIVAM GHUGE\Downloads\archive (1)\credit_risk_dataset.csv")
+    
+    data = rename_column(data,'loan_status','defaulter')
+
+    train_data,test_data = train_test_split(data,test_size=0.3,random_state=101)
+
+    save_data(train_data,test_data,'./data')
+
+    logger.debug('data ingestion process complete')
+
+
+if __name__ == "__main__":
+    main()
+
+
 

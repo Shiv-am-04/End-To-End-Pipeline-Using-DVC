@@ -33,11 +33,9 @@ def load_data(file_path):
     try:
         data = pd.read_csv(file_path)
         logger.debug("data loaded successfully")
+        return data
     except Exception as e:
         logger.error("error occured while loading the data",e)
-    
-    return data
-
 
 def train_model(X_train,y_train):
     model = XGBClassifier()
@@ -70,7 +68,7 @@ def save_model(model):
 
 def main():
     X_train = load_data(r'D:\MLOPS\DVC\pipeline\End-To-End-Pipeline-Using-DVC\data\final\X_train.csv')
-    y_train = load_data(r'D:\MLOPS\DVC\pipeline\End-To-End-Pipeline-Using-DVC\data\final\y_train.csv')
+    y_train = load_data(r'D:\MLOPS\DVC\pipeline\End-To-End-Pipeline-Using-DVC\data\preprocessed\y_train.csv')
 
     model = train_model(X_train,y_train)
 

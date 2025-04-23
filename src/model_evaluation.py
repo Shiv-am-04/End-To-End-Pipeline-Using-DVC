@@ -32,10 +32,10 @@ def load_data(file_path):
     try:
         data = pd.read_csv(file_path)
         logger.debug("data loaded successfully")
+        return data
     except Exception as e:
         logger.error("error occured while loading the data",e)
-    
-    return data
+
 
 def load_model(model_path):
     try:
@@ -80,7 +80,7 @@ def save_metrics(metrics:dict):
         raise
 
 def main():
-    X_test = load_data(r'D:\MLOPS\DVC\pipeline\End-To-End-Pipeline-Using-DVC\data\preprocessed\X_test.csv')
+    X_test = load_data(r'D:\MLOPS\DVC\pipeline\End-To-End-Pipeline-Using-DVC\data\final\X_test.csv')
     y_test = load_data(r'D:\MLOPS\DVC\pipeline\End-To-End-Pipeline-Using-DVC\data\preprocessed\y_test.csv')
 
     model = load_model(r'D:\MLOPS\DVC\pipeline\End-To-End-Pipeline-Using-DVC\models\grid_model.pkl')

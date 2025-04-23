@@ -69,8 +69,8 @@ def save_model(model):
     logger.debug("model saved to %s",directory)
 
 def main():
-    X_train = load_data(r'D:\MLOPS\DVC\pipeline\End-To-End-Pipeline-Using-DVC\data\preprocessed\X_train.csv')
-    y_train = load_data(r'D:\MLOPS\DVC\pipeline\End-To-End-Pipeline-Using-DVC\data\preprocessed\y_train.csv')
+    X_train = load_data(r'D:\MLOPS\DVC\pipeline\End-To-End-Pipeline-Using-DVC\data\final\X_train.csv')
+    y_train = load_data(r'D:\MLOPS\DVC\pipeline\End-To-End-Pipeline-Using-DVC\data\final\y_train.csv')
 
     model = train_model(X_train,y_train)
 

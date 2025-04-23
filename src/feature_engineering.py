@@ -42,20 +42,21 @@ def feature_handling(data:pd.DataFrame):
         logger.debug("droped the unnecessary column")
 
     # cb_person_default is binary data and after two columns are created of which any one is useful
-    data = data.drop(columns="cb_person_default_on_file_N")
-    logger.debug('feature handling completed')
+    if 'cb_person_default_on_file_N' in data.columns:
+        data = data.drop(columns="cb_person_default_on_file_N")
+        logger.debug('feature handling completed')
     
     return data
 
 def save_data(X_train,X_test,path):
-    directory = os.path.join(path,'preprocessed')
+    directory = os.path.join(path,'final')
     os.makedirs(directory,exist_ok=True)
 
     X_train.to_csv(os.path.join(directory,'X_train.csv'),index=False)
     
     X_test.to_csv(os.path.join(directory,'X_test.csv'),index=False)
 
-    logger.debug(f'features and target data saved back to the {directory} folder')
+    logger.debug(f'features and target data saved to the {directory} folder')
 
 
 def main():

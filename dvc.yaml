@@ -22,7 +22,7 @@ stages:
     # params:
     # - feature_engineering.max_features
     outs:
-    - data/preprocessed
+    - data/final
   model_building:
     cmd: python src/model_training.py
     deps:

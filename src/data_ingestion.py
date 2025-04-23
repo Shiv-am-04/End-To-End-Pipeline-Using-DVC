@@ -48,7 +48,7 @@ def rename_column(data,original_name:str,new_name:str):
 
 def save_data(train_data,test_data,data_path):
     raw_data_path = os.path.join(data_path,'raw')
-    os.makedirs(raw_data_path)
+    os.makedirs(raw_data_path,exist_ok=True)
     train_data.to_csv(os.path.join(raw_data_path,'train_data.csv'))
     test_data.to_csv(os.path.join(raw_data_path,'test_data.csv'))
 
@@ -57,8 +57,11 @@ def save_data(train_data,test_data,data_path):
 
 def main():
     data = load_data(r"C:\Users\SHIVAM GHUGE\Downloads\archive (1)\credit_risk_dataset.csv")
-    
-    data = rename_column(data,'loan_status','defaulter')
+
+    # removing those who aged above 70 as bank won't provide loan to people with age above 60-70
+    # removing these is essential before splitting into train and test.
+    data = data[data['person_age'] <= 70]
+    logger.debug("unnecessary data removed")
 
     train_data,test_data = train_test_split(data,test_size=0.3,random_state=101)
 

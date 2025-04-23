@@ -51,14 +51,10 @@ def preprocess(data:pd.DataFrame):
         data.loc[(data['person_emp_length'].isna()) & (data['loan_grade'] == val), 'person_emp_length'] = mean_values_per_loangrade[val]
     logger.debug('person_emp_length missing values filled')
 
-    # interest rae column filled with the median because either data is negatively or positively skewed, we should replace missing values with the median. 
+    # interest rate column filled with the median because either data is negatively or positively skewed, we should replace missing values with the median. 
     data.loc[data['loan_int_rate'].isna(),'loan_int_rate'] = data['loan_int_rate'].median()
     logger.debug('loan_int_rate missing values filled')
     print(data.isna().sum())
-
-    # removing those who aged above 70 as bank won't provide loan to people with age above 60-70
-    data = data[data['person_age'] <= 70]
-    logger.debug("data removed")
 
     return data
 

@@ -1,6 +1,6 @@
-End-To-End-Pipeline-Using-DVC\data
-End-To-End-Pipeline-Using-DVC\models
-End-To-End-Pipeline-Using-DVC\results
+data/
+models/
+results/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

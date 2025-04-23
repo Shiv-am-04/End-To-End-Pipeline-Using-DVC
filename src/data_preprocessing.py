@@ -96,13 +96,13 @@ def encoding_categorical_features(data:pd.DataFrame):
 
 def save_data(X_train,y_train,X_test,y_test,file_path):
     directory = os.path.join(file_path,'preprocessed')
-    os.makedirs(directory)
+    os.makedirs(directory,exist_ok=True)
 
-    X_train.to_csv(os.path.join(directory,'X_train.csv'))
-    y_train.to_csv(os.path.join(directory,'y_train.csv'))
+    X_train.to_csv(os.path.join(directory,'X_train.csv'),index=False)
+    y_train.to_csv(os.path.join(directory,'y_train.csv'),index=False)
     
-    X_test.to_csv(os.path.join(directory,'X_test.csv'))
-    y_test.to_csv(os.path.join(directory,'y_test.csv'))
+    X_test.to_csv(os.path.join(directory,'X_test.csv'),index=False)
+    y_test.to_csv(os.path.join(directory,'y_test.csv'),index=False)
 
     logger.debug(f'features and target data saved to the {directory} folder')
 

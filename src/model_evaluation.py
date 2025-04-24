@@ -4,6 +4,7 @@ import os
 import pickle
 import json
 from sklearn.metrics import confusion_matrix,precision_score,recall_score,roc_auc_score,accuracy_score
+# from dvclive.live import Live
 
 log_directory = 'logs'
 os.makedirs(log_directory,exist_ok=True)
@@ -46,11 +47,12 @@ def load_model(model_path):
     except Exception as e:
         logger.error(f"provide model_path as raw string")
 
-def evalauate(X_test,y_test,model):
+def evaluate(X_test,y_test,model):
     y_pred = model.predict(X_test)
     y_pred_probablity = model.predict_proba(X_test)[:,1]
 
-    print(confusion_matrix(y_test,y_pred))
+    cf = confusion_matrix(y_test,y_pred)
+    print(cf)
     accuracy = accuracy_score(y_test,y_pred)
     recall = recall_score(y_test,y_pred)
     precision = precision_score(y_test,y_pred)
@@ -65,7 +67,7 @@ def evalauate(X_test,y_test,model):
 
     logger.debug('Evaluation done and metrics calculated')
 
-    return metrics
+    return metrics,cf
 
 def save_metrics(metrics:dict):
     directory = 'results'
@@ -83,9 +85,10 @@ def main():
     X_test = load_data(r'D:\MLOPS\DVC\pipeline\End-To-End-Pipeline-Using-DVC\data\final\X_test.csv')
     y_test = load_data(r'D:\MLOPS\DVC\pipeline\End-To-End-Pipeline-Using-DVC\data\preprocessed\y_test.csv')
 
-    model = load_model(r'D:\MLOPS\DVC\pipeline\End-To-End-Pipeline-Using-DVC\models\grid_model.pkl')
 
-    metrics = evalauate(X_test,y_test,model)
+    xgboost = load_model(r'D:\MLOPS\DVC\pipeline\End-To-End-Pipeline-Using-DVC\models\xgboost_model.pkl')
+
+    metrics,cf = evaluate(X_test,y_test,xgboost)
 
     save_metrics(metrics)
 

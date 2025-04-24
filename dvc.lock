@@ -5,8 +5,11 @@ stages:
     deps:
     - path: src/data_ingestion.py
       hash: md5
-      md5: 013fea0c234199537405aed05707939f
-      size: 2170
+      md5: 4a0caa0f0e52f420597577afed45ced3
+      size: 2797
+    params:
+      params.yaml:
+        data_ingestion.test_size: 0.3
     outs:
     - path: data/raw
       hash: md5
@@ -59,24 +62,38 @@ stages:
       nfiles: 4
     - path: src/model_training.py
       hash: md5
-      md5: e8e4faadd3796ecfc0a0a27bddba2694
-      size: 2225
+      md5: b129a94e758db88fa0f8c0f779c32035
+      size: 3443
+    params:
+      params.yaml:
+        model_training.grow_policy: lossguide
+        model_training.max_depth: 3
+        model_training.max_leaves: 4
+        model_training.n_estimators: 200
     outs:
     - path: models/grid_model.pkl
       hash: md5
-      md5: d1a9fbc6cb0cf2c3c0689f6b981863a0
+      md5: 808a9dde1b59553aaf912afa1c704bf5
       size: 200511
+    - path: models/xgboost_model.pkl
+      hash: md5
+      md5: 398f33309967b3b6bae6efc84ebf66c0
+      size: 184177
   model_evaluation:
     cmd: python src/model_evaluation.py
     deps:
     - path: models/grid_model.pkl
       hash: md5
-      md5: d1a9fbc6cb0cf2c3c0689f6b981863a0
+      md5: 808a9dde1b59553aaf912afa1c704bf5
       size: 200511
+    - path: models/xgboost_model.pkl
+      hash: md5
+      md5: 398f33309967b3b6bae6efc84ebf66c0
+      size: 184177
     - path: src/model_evaluation.py
       hash: md5
-      md5: 3d7ab6d7c3aa388f9ee08632fce80d04
-      size: 2738
+      md5: a009da4dcee1b51ee42fa86c1f7235e7
+      size: 2797
     outs:
     - path: results/metrics.json
       hash: md5

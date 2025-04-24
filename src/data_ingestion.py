@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import logging
 import os
+import yaml
 from sklearn.model_selection import train_test_split
 
 # logging setup #
@@ -27,6 +28,23 @@ file_handler.setFormatter(formatter)
 
 logger.addHandler(console_handler)
 logger.addHandler(file_handler)
+
+
+def load_params(params_path):
+    try:
+        with open(params_path,'r') as f:
+            params = yaml.safe_load(f)
+        logger.debug("params loaded successfully")
+
+        return params
+    except yaml.YAMLError as e:
+        logger.error("YAML error %s",e)
+        raise
+    except FileNotFoundError:
+        logger.error("file not found")
+        raise
+    except Exception as e:
+        logger.error("unexpected error : {e}")
 
 
 def load_data(file_path):
@@ -63,7 +81,11 @@ def main():
     data = data[data['person_age'] <= 70]
     logger.debug("unnecessary data removed")
 
-    train_data,test_data = train_test_split(data,test_size=0.3,random_state=101)
+    params = load_params(r'D:\MLOPS\DVC\pipeline\End-To-End-Pipeline-Using-DVC\params.yaml')
+
+    test_size = params['data_ingestion']['test_size']
+
+    train_data,test_data = train_test_split(data,test_size=test_size,random_state=101)
 
     save_data(train_data,test_data,'./data')
 

@@ -4,7 +4,7 @@ import os
 import pickle
 import json
 from sklearn.metrics import confusion_matrix,precision_score,recall_score,roc_auc_score,accuracy_score
-# from dvclive.live import Live
+from dvclive.live import Live
 
 log_directory = 'logs'
 os.makedirs(log_directory,exist_ok=True)
@@ -67,7 +67,7 @@ def evaluate(X_test,y_test,model):
 
     logger.debug('Evaluation done and metrics calculated')
 
-    return metrics,cf
+    return metrics,y_pred
 
 def save_metrics(metrics:dict):
     directory = 'results'
@@ -88,7 +88,15 @@ def main():
 
     xgboost = load_model(r'D:\MLOPS\DVC\pipeline\End-To-End-Pipeline-Using-DVC\models\xgboost_model.pkl')
 
-    metrics,cf = evaluate(X_test,y_test,xgboost)
+    metrics,y_pred = evaluate(X_test,y_test,xgboost)
+
+    with Live(save_dvc_exp=True) as l:
+        l.log_sklearn_plot(kind='confusion_matrix',labels=y_test,predictions=y_pred)
+        l.log_metric('recall',metrics['recall'])
+        l.log_metric('precision',metrics['precision'])
+        l.log_metric('accuracy',metrics['accuracy'])
+        l.log_metric('roc-auc',metrics['roc'])
+        
 
     save_metrics(metrics)
 
